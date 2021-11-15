@@ -1,0 +1,21 @@
+.cancel-icon{
+    height: 20px;
+    width: 20px;
+    color: red;
+    margin-left: 5px;
+}
+.edit-row{
+    outline: none;
+    border: solid 1px #4f46e5;
+    padding: 5px;
+    border-radius: 5px;
+}
+.btn{
+    border: none;
+    outline: none;
+    border: solid 1px #4f46e5;
+    color: #4f46e5;
+    font-weight: 600;
+    background-color: white;
+    padding: 5px;
+}
