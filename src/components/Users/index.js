@@ -69,7 +69,7 @@ class Users extends Component {
   }
 
   callUsersApi = async () => {
-    this.setState({ apiStatus: apiStatusConstants.inProgress })
+    this.setState({ apiStatus: apiStatusConstants.inProgress , searchInput: ''})
     const url =
       'https://geektrust.s3-ap-southeast-1.amazonaws.com/adminui-problem/members.json'
     const response = await fetch(url)
@@ -196,53 +196,68 @@ class Users extends Component {
   }
 
   onClickCancel = () => {
-    this.setState({editingRowId: ''})
+    this.setState({ editingRowId: '' })
   }
 
-  renderTopView = () => (
-    <>
-      <form className="table-design" onSubmit={this.onSubmitEditedData}>
-        <table className="users_table">
-          <thead>
-            <tr>
-              <th>
-                <input
-                  type="checkbox"
-                  value="checkedAll"
-                  onClick={this.handleAllChecked}
-                />
-              </th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Role</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          {this.renderUsersList()}
-        </table>
-      </form>
-      <div className="bottom_pagination">
-        <div className="delete_btn_design">
-          <button type="button" onClick={this.deleteSelectedUsers}>
-            Delete Selected
-          </button>
+  renderTopView = () => {
+    const { searchInput, usersList } = this.state
+    const searchResults = usersList.filter(
+      eachUser =>
+        eachUser.name.toLowerCase().includes(searchInput.toLowerCase()) ||
+        eachUser.role.toLowerCase().includes(searchInput.toLowerCase()) ||
+        eachUser.email.toLowerCase().includes(searchInput.toLowerCase()),
+    )
+    let lengthOfList = null
+    if (searchResults.length > 0 && usersList.length > 0) {
+      lengthOfList = true
+    }
+    else {
+      lengthOfList = false
+    }
+    return (
+      <>
+        {lengthOfList ? <form className="table-design" onSubmit={this.onSubmitEditedData}>
+          <table className="users_table">
+            <thead>
+              <tr>
+                <th>
+                  <input
+                    type="checkbox"
+                    value="checkedAll"
+                    onClick={this.handleAllChecked}
+                  />
+                </th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            {this.renderUsersList()}
+          </table>
+        </form> : this.renderNoResults()}
+        <div className="bottom_pagination">
+          <div className="delete_btn_design">
+            <button type="button" onClick={this.deleteSelectedUsers}>
+              Delete Selected
+            </button>
+          </div>
         </div>
-      </div>
-      <ul className="pagination-ul">
-        <AiOutlineArrowLeft onClick={this.onDecrement} className="icon" />
-        {pages.map(each => (
-          <PaginationRender
-            key={each.id}
-            details={each}
-            isActive={each.id === this.state.activePage}
-            setPage={this.setPage}
-          />
-        ))}
-        <AiOutlineArrowRight onClick={this.onIncrement} className="icon" />
-      </ul>
-    </>
-  )
-
+        <ul className="pagination-ul">
+          <AiOutlineArrowLeft onClick={this.onDecrement} className="icon" />
+          {pages.map(each => (
+            <PaginationRender
+              key={each.id}
+              details={each}
+              isActive={each.id === this.state.activePage}
+              setPage={this.setPage}
+            />
+          ))}
+          <AiOutlineArrowRight onClick={this.onIncrement} className="icon" />
+        </ul>
+      </>
+    )
+  }
   renderUsersList = () => {
     const { editingRowId, usersList, searchInput, editFormData } = this.state
     const searchResults = usersList.filter(
@@ -274,6 +289,17 @@ class Users extends Component {
       </tbody>
     )
   }
+  renderNoResults = () => (
+    <div className="not-found-section">
+      <img
+        src="https://image.freepik.com/free-vector/illustration-magnifying-glass-icon_53876-5613.jpg"
+        alt="failure view"
+        className="failure-image"
+      />
+      <p>OOPS! No Results</p>
+      <button type="button" onClick={this.callUsersApi} className="btn">Retry</button>
+    </div>
+  )
 
   renderFailureView = () => (
     <div className="not-found-section">
@@ -311,7 +337,7 @@ class Users extends Component {
     const { searchInput } = this.state
     return (
       <div className="search_design">
-        <h1 className="main-heading">Users List</h1>
+        <h1 className="main-heading">Admin UI</h1>
         <input
           type="search"
           className="search_filter"

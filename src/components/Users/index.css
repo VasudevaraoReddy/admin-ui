@@ -31,6 +31,7 @@
   font-size: 16px;
   height: 35px;
   border-radius: 5px;
+  outline: none;
 }
 
 .table-design {
@@ -38,6 +39,14 @@
   margin: 4%;
   width: 80%;
 }
+
+@media screen and (min-width:768px){
+  .table-design {
+    margin: 4%;
+    width: 85%;
+  } 
+}
+
 
 .users_table {
   width: 100%;
@@ -60,7 +69,7 @@
 .bottom_pagination {
   display: flex;
   flex-direction: row;
-  width: 100%;
+  width: 90%;
   padding: 10px;
 }
 
@@ -72,11 +81,7 @@
   padding: 10px;
   cursor: pointer;
   margin-left: 50px;
-}
-
-.delete_btn_design button:hover {
-  background-color: lightgrey;
-  color: #dc3545;
+  outline: none;
 }
 
 .pagination {
