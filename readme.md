@@ -1,4 +1,3 @@
-[22:08, 14/11/2021] Vasu Reddy Bro: ## Available Scripts
 
 In the project directory, you can run:
 
